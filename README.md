@@ -1,2 +1,4 @@
 # Glasses-Screen-Reflect
 A Python project that uses CV2 and PIL to reflect your computer screen onto a video.
+
+This program opens plays the new video in a windows forum so it cant stay open if you click on another program. I fixed this issue using another program called DeskPins. However, this program still cant be put over most games. Clicking the Escape button is the only way to close the program besides the Task Manager. Clicking the X button will not work. If you want to replace the videos with your own, you will need to make a kind of 'green screen' mask. I used blender to trace over every keyframe. You can replace these videos by putting the new videos in the GreenScreenGlasses folder, then replacing the file names where it says 'mask_read' and 'video_read' in the main code. Feel free to take this code and edit it, or make it even better. 
