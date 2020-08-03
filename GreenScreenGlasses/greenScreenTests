@@ -1,0 +1,79 @@
+import cv2
+from PIL import ImageGrab, Image
+import numpy as np 
+import matplotlib.pyplot as plt
+import sys
+
+
+lower_green = np.array([0, 50, 0])
+higher_green = np.array([120, 255, 100])
+
+
+def GetScreen():
+	img = ImageGrab.grab()
+	img_np = np.array(img)
+
+	RGB_Screen = cv2.cvtColor(img_np, cv2.COLOR_BGR2RGB)
+	Final_Screen = Image.fromarray(RGB_Screen)
+	
+	return Final_Screen
+
+def MakeMask(makeFrame):
+	#fucks with the frame to get it to fucking work jesus christ
+	get_mask = cv2.cvtColor(makeFrame, cv2.COLOR_BGR2RGB)
+	get_mask = cv2.inRange(get_mask, lower_green, higher_green)
+	Final_mask = Image.fromarray(get_mask)
+	Final_mask = Final_mask.convert("L")
+	return Final_mask
+
+
+
+
+
+while True:
+	
+	isclosed = 0
+	mask_read = cv2.VideoCapture('C:/Users/cojac/OneDrive/Desktop/Blender_Files/GreenHahah/Green4Screen.avi')
+	video_read = cv2.VideoCapture('C:/Users/cojac/OneDrive/Desktop/Blender_Files/GreenHahah/REAL_Lily.mp4')
+	while (True):
+		#gets and converts video frame to an array
+		ret, mask_frame = mask_read.read()
+		ret2, video_frame = video_read.read()
+		copy_frame = np.copy(video_frame)
+		
+		#repeats and plays video
+		if ret and ret2 == True:
+			
+			video2image = Image.fromarray(copy_frame)
+			im = Image.composite(GetScreen(), video2image, MakeMask(mask_frame))
+			display = np.copy(im)
+
+			cv2.imshow('Lily', display)
+			
+			
+			
+			
+
+			
+			#isclosed = 1 
+			#break 
+
+
+
+			if cv2.waitKey(50) == 27:
+				isclosed = 1 
+				break 
+		else:
+			break
+	if isclosed:
+		break
+
+
+
+
+
+
+
+mask_read.release()
+video_read.release()
+cv2.destroyAllWindows()
